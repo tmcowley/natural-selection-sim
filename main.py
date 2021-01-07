@@ -1,13 +1,25 @@
-from random import getrandbits, choice, shuffle, random, randint;
-from math import sqrt;
+from random import  getrandbits;
+from random import  choice;
+from random import  shuffle;
+from random import  random;
+from random import  sample;
+from random import  randint;
+
+from math import    sqrt;
+from math import    floor;
 
 class Being:
-    dna_bases = ['A', 'C', 'G', 'T'];
+    dna_bases   = ['A', 'C', 'G', 'T'];
+    max_pop     = 50000;
+
+    def is_child_of(self, being):
+        is_parent = (self.parent1 == being or self.parent2 == being);
+        return (is_parent);
 
     @staticmethod
     def genetic_mutation():
         # 1 in 100 chance
-        return (randint(1, 100) == 1);
+        return (randint(1, 5) == 1);
 
     @staticmethod
     def merge_dna(dna_parent_1, dna_parent_2):
@@ -34,8 +46,8 @@ class Being:
         if (current_generation - self.generation >= 4):
             return 0; # senicide
         dna_optimal_base_proportion = self.dna.count(optimal_base) / len(self.dna);
-        #return sqrt(saturation_level);
-        return dna_optimal_base_proportion;
+        #print("given a {}% chance to live".format((dna_optimal_base_proportion**2)*100));
+        return (dna_optimal_base_proportion**6);
     
     def __str__(self):
         string = "[";
@@ -48,58 +60,73 @@ class Being:
         self.generation = this_generation;
         self.parent1 = parent1;
         self.parent2 = parent2;
-        if ((parent1 == None) and (parent2 == None)):
+        if ((parent1 == None) or (parent2 == None)):
             self.dna = Being.random_dna();
         else:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna);
 
 class Population:
     @staticmethod
-    def are_related(parent1, parent2):
-        if (parent1.parent1 == parent2 or parent1.parent2 == parent2):
-            return True;
-        if (parent2.parent1 == parent1 or parent2.parent2 == parent1):
-            return True;
+    def are_related(being1, being2):
+        # check if being2 is a parent of being1, and if being1 is a parent of being2
+        related = (being1.is_child_of(being2) or being2.is_child_of(being1));
+        return related;
 
     def replace_parent_with_child(self, parent, child):
         parent_index = self.population.index(parent);
         self.population[parent_index] = child;
 
-    def mate(self, parent1, parent2):
-        child1  = Being(self.generation, parent1, parent2);
-        child2  = Being(self.generation, parent1, parent2);
-        self.replace_parent_with_child(parent1, child1);
-        self.replace_parent_with_child(parent2, child2);
+    @staticmethod
+    def mate(generation, parent1, parent2): 
+        return Being(generation, parent1, parent2);
     
-    def mating_season(self):        
-        # shuffle population to generate random consecutive pairs
-        # match each consecutive being to procreate
+    def mating_season(self): 
+        # shuffle population to improve randomness
         shuffle(self.population);
-        # use of (pop size -1) for odd case to exclude last member
-        for index in range(0, len(self.population)-1, 2):
-            parent1 = self.population[index];
-            parent2 = self.population[index+1];
-            self.mate(parent1, parent2);
+
+        # empty list, storing offspring
+        # let n be the current population size
+        # allow at most n reproductions
+        offspring = [None]*floor(3*(len(self.population)));
+
+        for index in range(len(offspring)):
+            mating_pair = sample(self.population, 2);
+            candidate1 = mating_pair[0];
+            candidate2 = mating_pair[1];
+            if (Population.are_related(candidate1, candidate2)):
+                continue;
+            offspring[index] = Population.mate(self.generation, candidate1, candidate2);
+        
+        # merge offspring array with general population
+        offspring = [child for child in offspring if child];
+        self.population += offspring;
     
-    def test_fitness(self):
+    def test_fitness(self): 
+        # empty list, storing survivors 
+        survivors = [None]*len(self.population);
+
         # test fitness of each member of the population
         for index, being in enumerate(self.population):
             survival_prob = being.get_survival_probability(self.optimal_base, self.generation);
-            if (random() >= survival_prob):
-                #being dies
-                being_index = self.population.index(being);
-                self.population[being_index] = None;
-        # filter dead beings from population
-        self.population = [being for being in self.population if being]
+            if (random() < survival_prob):
+                #being lives
+                survivors[index] = being;
+
+        # filter dead beings from survivors, set to population
+        self.population = [being for being in survivors if being]
+        print ("survived: {}".format(len(self.population)));
 
     def get_next_gen(self):
         self.generation += 1;
         self.test_fitness();
-        self.mating_season();
+        if (len(self.population) > 1):
+            self.mating_season();
     
     def advance_gen(self, count):
         for i in range(count):
+
             self.get_next_gen();
+            print("Gen {} completed, pop:{}".format(self.generation, len(self.population)))
 
     def print_generation(self):
         gen_desc    = " ==== Generation {} ==== \n".format(self.generation);
@@ -123,10 +150,10 @@ class Population:
         for (index, base) in enumerate(self.population):
             self.population[index] = Being(self.generation);
 
-pop = Population(10000, 'A');
-pop.print_generation();
+pop = Population(5000000, 'A');
+#pop.print_generation();
 
-pop.advance_gen(7);
+pop.advance_gen(6);
 pop.print_generation();
 
     
