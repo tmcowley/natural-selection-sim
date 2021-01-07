@@ -10,7 +10,7 @@ from math import    floor;
 
 class Being:
     dna_bases   = ['A', 'C', 'G', 'T'];
-    max_pop     = 50000;
+    survival_prob_exponent = 3.5;
 
     def is_child_of(self, being):
         is_parent = (self.parent1 == being or self.parent2 == being);
@@ -18,8 +18,8 @@ class Being:
 
     @staticmethod
     def genetic_mutation():
-        # 1 in 100 chance
-        return (randint(1, 5) == 1);
+        # 1 in 1000 chance
+        return (randint(1, 1000) == 1);
 
     @staticmethod
     def merge_dna(dna_parent_1, dna_parent_2):
@@ -47,7 +47,7 @@ class Being:
             return 0; # senicide
         dna_optimal_base_proportion = self.dna.count(optimal_base) / len(self.dna);
         #print("given a {}% chance to live".format((dna_optimal_base_proportion**2)*100));
-        return (dna_optimal_base_proportion**6);
+        return (dna_optimal_base_proportion**Being.survival_prob_exponent);
     
     def __str__(self):
         string = "[";
@@ -66,6 +66,12 @@ class Being:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna);
 
 class Population:
+
+    max_pop     = 50000;
+    critical_high_pop   = 10000;
+    critical_low_pop    = 500;
+    reproduction_factor_in_gen = 4;
+
     @staticmethod
     def are_related(being1, being2):
         # check if being2 is a parent of being1, and if being1 is a parent of being2
@@ -85,9 +91,8 @@ class Population:
         shuffle(self.population);
 
         # empty list, storing offspring
-        # let n be the current population size
-        # allow at most n reproductions
-        offspring = [None]*floor(3*(len(self.population)));
+        # let n be the current population size, allow kn reproductions
+        offspring = [None]*floor(self.reproduction_factor_in_gen*(len(self.population)));
 
         for index in range(len(offspring)):
             mating_pair = sample(self.population, 2);
@@ -117,6 +122,16 @@ class Population:
         print ("survived: {}".format(len(self.population)));
 
     def get_next_gen(self):
+        if (len(self.population) <= Population.critical_low_pop):
+            # increase reproduction, decrease exp
+            self.reproduction_factor_in_gen += 2;
+            #Being.survival_prob_exponent = max(1, Being.survival_prob_exponent-1);
+            Being.survival_prob_exponent *= 0.5;
+        if (len(self.population) >= Population.critical_high_pop):
+            # halve reproduction rate
+            self.reproduction_factor_in_gen *= 0.5;
+            Being.survival_prob_exponent *= 2;
+        
         self.generation += 1;
         self.test_fitness();
         if (len(self.population) > 1):
@@ -124,11 +139,14 @@ class Population:
     
     def advance_gen(self, count):
         for i in range(count):
-
             self.get_next_gen();
-            print("Gen {} completed, pop:{}".format(self.generation, len(self.population)))
+            print("Gen {} completed, pop:{}".format(self.generation, len(self.population)));
+            if (len(self.population) < 1):
+                break;
 
     def print_generation(self):
+        if (len(self.population) == 0):
+            return "\n";
         gen_desc    = " ==== Generation {} ==== \n".format(self.generation);
         gen_end     = "\n {} \n".format("="*(len(gen_desc)-3));
         print(gen_desc + str(self) + gen_end);
@@ -150,10 +168,10 @@ class Population:
         for (index, base) in enumerate(self.population):
             self.population[index] = Being(self.generation);
 
-pop = Population(5000000, 'A');
+pop = Population(50000, 'A');
 #pop.print_generation();
 
-pop.advance_gen(6);
+pop.advance_gen(40);
 pop.print_generation();
 
     
