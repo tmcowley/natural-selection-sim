@@ -121,18 +121,19 @@ class Population:
         self.population = [being for being in survivors if being]
         print ("survived: {}".format(len(self.population)));
 
-    def get_next_gen(self):
+    def control_population(self):
         if (len(self.population) <= Population.critical_low_pop):
-            # increase reproduction, decrease exp
+            # increase reproduction rate, halve exp
             self.reproduction_factor_in_gen += 2;
-            #Being.survival_prob_exponent = max(1, Being.survival_prob_exponent-1);
             Being.survival_prob_exponent *= 0.5;
         if (len(self.population) >= Population.critical_high_pop):
-            # halve reproduction rate
+            # halve reproduction rate, double exp
             self.reproduction_factor_in_gen *= 0.5;
             Being.survival_prob_exponent *= 2;
-        
+
+    def get_next_gen(self):
         self.generation += 1;
+        self.control_population();
         self.test_fitness();
         if (len(self.population) > 1):
             self.mating_season();
@@ -143,6 +144,9 @@ class Population:
             print("Gen {} completed, pop:{}".format(self.generation, len(self.population)));
             if (len(self.population) < 1):
                 break;
+    
+    def get_rand_being_in_population(self):
+        return choice(self.population);
 
     def print_generation(self):
         if (len(self.population) == 0):
@@ -169,7 +173,7 @@ class Population:
             self.population[index] = Being(self.generation);
 
 pop = Population(50000, 'A');
-#pop.print_generation();
+pop.print_generation();
 
 pop.advance_gen(40);
 pop.print_generation();
