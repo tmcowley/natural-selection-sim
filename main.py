@@ -66,17 +66,23 @@ class Being:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna);
 
 class Population:
-
-    max_pop     = 50000;
+    max_pop             = 50000;
     critical_high_pop   = 10000;
     critical_low_pop    = 500;
-    reproduction_factor_in_gen = 4;
+    reproduction_factor = 4;
 
     @staticmethod
     def are_related(being1, being2):
         # check if being2 is a parent of being1, and if being1 is a parent of being2
         related = (being1.is_child_of(being2) or being2.is_child_of(being1));
         return related;
+    
+    @staticmethod
+    def being_is_optimal(being, optimal_base):
+        for base in being.dna:
+            if (base != optimal_base):
+                return False;
+        return True;
 
     def replace_parent_with_child(self, parent, child):
         parent_index = self.population.index(parent);
@@ -92,7 +98,7 @@ class Population:
 
         # empty list, storing offspring
         # let n be the current population size, allow kn reproductions
-        offspring = [None]*floor(self.reproduction_factor_in_gen*(len(self.population)));
+        offspring = [None]*floor(self.reproduction_factor*(len(self.population)));
 
         for index in range(len(offspring)):
             mating_pair = sample(self.population, 2);
@@ -124,11 +130,11 @@ class Population:
     def control_population(self):
         if (len(self.population) <= Population.critical_low_pop):
             # increase reproduction rate, halve exp
-            self.reproduction_factor_in_gen += 2;
+            self.reproduction_factor += 1;
             Being.survival_prob_exponent *= 0.5;
         if (len(self.population) >= Population.critical_high_pop):
             # halve reproduction rate, double exp
-            self.reproduction_factor_in_gen *= 0.5;
+            self.reproduction_factor *= 0.5;
             Being.survival_prob_exponent *= 2;
 
     def get_next_gen(self):
@@ -172,22 +178,17 @@ class Population:
         for (index, base) in enumerate(self.population):
             self.population[index] = Being(self.generation);
 
-pop = Population(50000, 'A');
+optimal_base = choice(Being.dna_bases);
+
+pop = Population(5000, optimal_base);
 pop.print_generation();
 
-pop.advance_gen(40);
+pop.advance_gen(30);
 pop.print_generation();
 
-    
+random_being = pop.get_rand_being_in_population();
 
-
-# this_generation = 0;
-
-# parent1 = Being(this_generation);
-# parent2 = Being(this_generation);
-# child1  = Being(this_generation, parent1, parent2);
-# child2  = Being(this_generation, parent1, parent2);
-# print("parent 1: \t"+ str(parent1));
-# print("parent 2: \t"+ str(parent2));
-# print("child 1: \t"+  str(child1));
-# print("child 2: \t"+  str(child2));
+if (Population.being_is_optimal(random_being, optimal_base)):
+    print("Population is likely optimal.\n");
+else:
+    print("Population is unlikely optimal.\n");
