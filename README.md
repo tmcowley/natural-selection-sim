@@ -4,11 +4,12 @@ Simple model for evolution by natural selection, which makes **many** simplifica
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
 ## Running
-Set permissions: >```$ chmod 755 main.py```
-Run program: >```$ python3 main.py```
+Set permissions: [tab]```$ chmod 755 main.py```
 
-### Modelling: Being Genetics
-* Being genome simplified to 16 single nucleobases (A,C,G,T)
+Run program: [tab]```$ python3 main.py```
+
+### Modelling: Genetics
+* DNA simplified to 16 single nucleobases (A,C,G,T)
 * Assumes that a being's phenotype is completely controlled by its genetics - this makes evaluating *fitness* easier
 
 ### Modelling: Heritable Variation, Differential Reproduction
