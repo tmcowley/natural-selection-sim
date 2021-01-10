@@ -1,12 +1,11 @@
 # Natural Selection Model
 Simple model for evolution by natural selection, which makes **many** simplifications, and shortcuts.
 
-This small project was undertaken to assist in my understanding of object-oriented programming in Python.
+This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
 ## Running
-```
-$ python3 main.py
-```
+Set permissions: >```$ chmod 755 main.py```
+Run program: >```$ python3 main.py```
 
 ### Modelling: Being Genetics
 * Being genome simplified to 16 single nucleobases (A,C,G,T)
