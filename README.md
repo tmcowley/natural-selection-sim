@@ -4,9 +4,9 @@ Simple model for evolution by natural selection, which makes **many** simplifica
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
 ## Running
-Set permissions: [tab]```$ chmod 755 main.py```
+Set permissions: ```$ chmod 755 main.py```
 
-Run program: [tab]```$ python3 main.py```
+Run program: &nbsp; &nbsp; ```$ python3 main.py```
 
 ### Modelling: Genetics
 * DNA simplified to 16 single nucleobases (A,C,G,T)
