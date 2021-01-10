@@ -4,13 +4,9 @@ Simple model for evolution by natural selection, which makes **many** simplifica
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
 ## Running
-Set permissions: 
+Set permissions, run program: 
 ```
 $ chmod 755 main.py
-```
-
-Run program: 
-```
 $ python3 main.py
 ```
 
