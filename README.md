@@ -17,8 +17,12 @@ $ python3 main.py
 ### Modelling: Heritable Variation, Differential Reproduction
 
 ### Modelling: Fitness
-
-### Modelling: Heritable Variation, Differential Reproduction
+* Fitness is represented as a probability: 0 for unfit, 1 for optimally fit
+* Fitness is calculated using the `get_survival_probability()` method
+* * closeness of the being's genetics to the specified optimal genetics considered (0-1)
+* * result is scaled using exponential function, `survival_prob = closeness^(3.5)`
+* * the higher the exponent, the more selective survivability is (as fitness is graded lower)
+* * optimal beings will always be graded optimally fit using this model
+* Beings greater than 4 generations old are set to unfit
 
 ### Modelling: Competition
-
