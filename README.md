@@ -23,6 +23,6 @@ $ python3 main.py
   * result is scaled using the exponential function: `survival_prob = closeness^(exponent), exp >= 1`
   * the higher the exponent, the more selective survivability is (as fitness is graded lower)
   * optimal beings will always be graded optimally fit using this model
-* Beings greater than 4 generations old are set to unfit
+* Beings greater than 4 generations old are set to unfit, not progressing to g5
 
 ### Modelling: Competition
