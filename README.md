@@ -15,6 +15,13 @@ $ python3 main.py
 * Assumes that a being's phenotype is completely controlled by its genetics - this makes evaluating *fitness* easier
 
 ### Modelling: Heritable Variation, Differential Reproduction
+* Each being in the initial population has randomly set genetics
+* Heritability is modelled with reproduction:
+  * Each base of the offspring DNA is picked randomly between both parents
+* Differential reproduction:
+  * Beings with reproductive advantages have a higher fitness rating
+  * Higher fitness correlates to higher rates of survival
+  * Which, on average, results in differential reproduction
 
 ### Modelling: Fitness
 * Fitness is represented as a probability: 0 for unfit, 1 for optimally fit
