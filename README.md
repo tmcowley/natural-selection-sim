@@ -16,7 +16,7 @@ $ python3 main.py
 
 ### Modelling: Heritable Variation, Differential Reproduction
 * Each being in the initial population has randomly set genetics
-* Heritability is modelled with reproduction:
+* Heritability is modelled via reproduction:
   * Each base of the offspring DNA is picked randomly between both parents
 * Differential reproduction:
   * Beings with reproductive advantages have a higher fitness rating
