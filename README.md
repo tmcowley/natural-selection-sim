@@ -33,3 +33,5 @@ $ python3 main.py
 * Beings greater than 4 generations old are set to unfit, and don't progress to generation 5
 
 ### Modelling: Competition
+
+### Controlling Population Size with a Dynamic Environment
