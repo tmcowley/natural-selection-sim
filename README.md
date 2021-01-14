@@ -35,3 +35,8 @@ $ python3 main.py
 ### Modelling: Competition
 
 ### Controlling Population Size with a Dynamic Environment
+* Due to computational limitations, exponential population growth must be avoided
+  * Environment is dynamically changed to impose greater selection pressures on population
+  * (Simulates resource scarcity, decreasing fitness)
+* To prevent rapid population decline:
+
