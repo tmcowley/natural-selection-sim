@@ -37,6 +37,10 @@ $ python3 main.py
 ### Controlling Population Size with a Dynamic Environment
 * Due to computational limitations, exponential population growth must be avoided
   * Environment is dynamically changed to impose greater selection pressures on population
-  * (Simulates resource scarcity, decreasing fitness)
-* To prevent rapid population decline:
-
+  * (Simulates resource scarcity, increasing selection pressures)
+  * critically high population count is stored in `critical_high_pop`, initially set to 10,000
+* To prevent rapid population decline, and :
+  * Environment changed to impose less strict selection pressures
+  * (Simulates resource abundance, decreasing selection pressures)
+  * Critically low population count is stored in `critically_low_pop`, initially set to 500
+* This functionality is very poor, and must be improved with further research for an improved simulation
