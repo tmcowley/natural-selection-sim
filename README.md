@@ -10,6 +10,10 @@ $ chmod 755 main.py
 $ python3 main.py
 ```
 
+## Demonstration
+
+<br>
+
 ### Modelling: Genetics
 * DNA simplified to 16 single nucleobases (A,C,G,T)
 * Assumes that a being's phenotype is completely controlled by its genetics - this makes evaluating *fitness* easier
