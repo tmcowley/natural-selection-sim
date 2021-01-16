@@ -36,7 +36,7 @@ $ python3 main.py
 * Beings greater than 4 generations old are set to unfit, and don't progress to generation 5
 
 ### Modelling: Competition
-####Controlling Population Size with a Dynamic Environment
+#### Controlling Population Size with a Dynamic Environment
 * Due to computational limitations, exponential population growth must be avoided
   * Environment is dynamically changed to impose greater selection pressures on population
   * (Simulates resource scarcity from increased competition, increasing selection pressures)
