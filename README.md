@@ -41,7 +41,7 @@ $ python3 main.py
   * Environment is dynamically changed to impose greater selection pressures on population
   * (Simulates resource scarcity from increased competition, increasing selection pressures)
   * critically high population count is stored in `critical_high_pop`, initially set to 10,000
-* To prevent rapid population decline, and :
+* To prevent rapid population decline (and simulation termination):
   * Environment changed to impose less strict selection pressures
   * (Simulates resource abundance from reduced competition, decreasing selection pressures)
   * Critically low population count is stored in `critically_low_pop`, initially set to 500
