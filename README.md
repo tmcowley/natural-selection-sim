@@ -25,6 +25,11 @@ $ python3 main.py
   * Beings with reproductive advantages have a higher fitness rating
   * Higher fitness correlates to higher rates of survival
   * Which, on average, results in differential reproduction
+#### Random Mutation
+* At creation, each being can be subject to random mutations:
+  * Each base in the genome has a one in `mutation_rate_denominator` (set to 1,000) chance of occuring
+  * A random mutation occurs, on average, once in a set of 32 beings
+  * Naturally, these mutations are heritable, and affect fitness assessment
 
 ### Modelling: Fitness
 * Fitness is represented as a probability: 0 for unfit, 1 for optimally fit
