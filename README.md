@@ -17,7 +17,7 @@ $ python3 main.py
 * DNA simplified to 16 single nucleobases (A,C,G,T)
 * Assumes a being's phenotype is completely controlled by its genetics 
   * This makes evaluating *fitness* easier
-  * Beings unaffected by simulated environment
+  * Phenotype is the same as genotype
 
 ### Modelling: Heritable Variation, Differential Reproduction
 * Each being in the initial population has randomly set genetics
