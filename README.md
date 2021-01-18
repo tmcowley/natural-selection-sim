@@ -1,21 +1,23 @@
 # Natural Selection Model
-Simple model for evolution by natural selection, which makes **many** simplifications, and shortcuts.
+Simple model for evolution by natural selection, which makes **many** simplifications and shortcuts.
 
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
-## Running
+## Running 
 Set permissions, run program: 
 ```
 $ chmod 755 main.py
 $ python3 main.py
 ```
 
-## Demonstration
+## Demonstration 
 
 
-### Modelling: Genetics
+### Modelling: Genetics 
 * DNA simplified to 16 single nucleobases (A,C,G,T)
-* Assumes that a being's phenotype is completely controlled by its genetics - this makes evaluating *fitness* easier
+* Assumes a being's phenotype is completely controlled by its genetics 
+  * This makes evaluating *fitness* easier
+  * Beings unaffected by simulated environment
 
 ### Modelling: Heritable Variation, Differential Reproduction
 * Each being in the initial population has randomly set genetics
