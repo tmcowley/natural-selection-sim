@@ -12,9 +12,21 @@ $ python3 main.py
 
 ## Demonstration 
 
-#### Initial Population
+#### Initial Population Subset
+```
+[TCTGGTCCCACACGTT] Gen:0
+[GCTCGGCTACAGCCGG] Gen:0
+[ACAAGGTGGGCAAGAA] Gen:0
+[ATGGGTCCCCCGGGGC] Gen:0
+```
 
 #### Population Subset (after 30 generations)
+```
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+```
 
 
 ### Modelling: Genetics 
