@@ -20,7 +20,7 @@ class Being:
     @staticmethod
     def genetic_mutation():
         # 1 in 1000 chance
-        return (randint(1, mutation_rate_denominator) == 1);
+        return (randint(1, Being.mutation_rate_denominator) == 1);
 
     @staticmethod
     def merge_dna(dna_parent_1, dna_parent_2):
