@@ -12,6 +12,10 @@ $ python3 main.py
 
 ## Demonstration 
 
+#### Initial Population
+
+#### Population Subset (after 30 generations)
+
 
 ### Modelling: Genetics 
 * DNA simplified to 16 single nucleobases (A,C,G,T)
@@ -52,4 +56,4 @@ $ python3 main.py
   * Environment changed to impose less strict selection pressures
   * (Simulates resource abundance from reduced competition, decreasing selection pressures)
   * Critically low population count is stored in `critically_low_pop`, initially set to 500
-* This functionality is very poor, and must be improved with further research for an improved simulation
+* This functionality is poor, and must be improved with further research for an improved simulation
