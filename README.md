@@ -47,7 +47,8 @@ Note: Optimal DNA set to 16 Gs
   * Which, on average, results in differential reproduction
 #### Random Mutation
 * At creation, each being can be subject to random mutations:
-  * Each base in the genome has a one in `mutation_rate_denominator` (set to 1,000) chance of occuring
+  * Each base in the genome has a small chance of randomly mutating
+  <br> (one in `mutation_rate_denominator` (set to 1,000) chance of occuring)
   * A random mutation occurs, on average, once in a set of 32 beings
   * Naturally, these mutations are heritable, and affect fitness assessment
 
@@ -55,7 +56,8 @@ Note: Optimal DNA set to 16 Gs
 * Fitness is represented as a probability: 0 for unfit, 1 for optimally fit
 * Fitness is calculated using the `get_survival_probability()` method
   * closeness of the being's genetics to the specified optimal genetics considered (0-1)
-  * result is scaled using the exponential function: `survival_prob = closeness^(exponent), exp >= 1`
+  * result is scaled using the exponential function: 
+  <br>`survival_prob = closeness^(exponent), exp >= 1`
   * the higher the exponent, the more selective survivability is (as fitness is graded lower)
   * optimal beings will always be graded optimally fit using this model
 * Beings greater than 4 generations old are set to unfit, and don't progress to generation 5
