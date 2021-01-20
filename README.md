@@ -71,4 +71,4 @@ Note: Optimal DNA set to 16 Gs
   * Environment changed to impose less strict selection pressures
   * (Simulates resource abundance from reduced competition, decreasing selection pressures)
   * Critically low population count is stored in `critically_low_pop`, initially set to 500
-* This functionality is poor, and must be improved with further research for an improved simulation
+* This functionality is poor, and must be improved with further research
