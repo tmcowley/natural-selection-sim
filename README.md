@@ -35,7 +35,6 @@ Note: Optimal DNA set to 16 Gs
 * DNA simplified to 16 single nucleobases (A,C,G,T)
 * Assumes a being's phenotype is completely controlled by its genetics 
   * This makes evaluating *fitness* easier
-  * Phenotype is the same as genotype
 
 ### Modelling: Heritable Variation, Differential Reproduction
 * Each being in the initial population has randomly set genetics
