@@ -29,7 +29,7 @@ Note: Optimal DNA set to 16 Gs
 [GGGGGGGGGGGGGGGG] Gen:30
 ```
 
-<br />
+<hr />
 
 ### Modelling: Genetics 
 * DNA simplified to 16 single nucleobases (A,C,G,T)
