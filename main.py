@@ -1,12 +1,9 @@
-from random import  getrandbits;
-from random import  choice;
-from random import  shuffle;
-from random import  random;
-from random import  sample;
-from random import  randint;
-
-from math import    sqrt;
-from math import    floor;
+from random import  getrandbits;    # to merge DNA
+from random import  choice;         # to merge DNA
+from random import  shuffle;        # to assist random mating
+from random import  random;         # to generate random initial pop
+from random import  sample;         # to choose mating partners
+from random import  randint;        # to generate a random mutation
 
 class Being:
     dna_bases   = ['A', 'C', 'G', 'T'];
