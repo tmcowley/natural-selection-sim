@@ -131,7 +131,7 @@ class Population:
 
         # filter dead beings from survivors, set to population
         self.population = [being for being in survivors if being]
-        print ("survived: {}".format(len(self.population)))
+        print ("Survived from Gen({} \u2192 {}): {}".format(self.generation, self.generation+1, len(self.population)))
 
     def control_population(self):
         if len(self.population) <= Population.critical_low_pop:
@@ -144,19 +144,27 @@ class Population:
             Being.survival_prob_exponent *= 2
 
     def get_next_gen(self):
-        self.generation += 1
         self.control_population()
         self.test_fitness()
         if self.get_population_size() > 1:
             self.mating_season()
+        self.generation += 1
 
     def advance_gen(self, count):
         if self.get_population_size() < 1:
             return
-        if count > 0:
-            self.get_next_gen()
-            print("Gen {} completed, pop:{}".format(self.generation, len(self.population)))
-            self.advance_gen(count-1)
+        if count <= 0:
+            return
+        
+        self.get_next_gen()
+        print("Gen {} population: {}".format(self.generation, self.get_population_size()))
+        if count != 1:
+            print("")
+        
+        # shuffle population to improve randomness
+        shuffle(self.population)
+        
+        self.advance_gen(count-1)
 
     def get_rand_being(self):
         if self.get_population_size() == 0:
@@ -183,7 +191,7 @@ class Population:
         if len(self.population) == 0:
             return "\n"
 
-        gen_desc    = "\n==== {} from Generation {} ====\n".format(count, self.generation)
+        gen_desc    = "\n=== {} from Generation {} ===\n".format(count, self.generation)
         desc_len    = len(gen_desc) - 2
         gen_end     = "\n{}\n".format("="*desc_len)
 
@@ -228,7 +236,7 @@ sleep(1)
 pop.print_subset(20)
 
 # advance population by n generations, print pop
-pop.advance_gen(3)
+pop.advance_gen(25)
 sleep(1)
 pop.print_subset(20)
 pop.assess_optimality();
