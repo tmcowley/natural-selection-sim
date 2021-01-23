@@ -1,3 +1,8 @@
+'''
+Simple model of evolution by natural selection.
+See github.com/tmcowley/natural-selection-sim
+'''
+
 from random import getrandbits  # to merge DNA
 from random import choice       # to merge DNA
 from random import shuffle      # to assist random mating
@@ -15,6 +20,7 @@ BeingType   = TypeVar('BeingType',  bound='Being')
 PopType     = TypeVar('PopType',    bound='Population')
 
 class Being:
+    ''' Represents a generic Being with DNA'''
     dna_bases   = ['A', 'C', 'G', 'T']
     survival_prob_exponent = 3.5
     mutation_rate_denominator = 1000
@@ -80,6 +86,7 @@ class Being:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna)
 
 class Population:
+    ''' Represents a Population composed of Beings '''
     max_pop             = 50000
     critical_high_pop   = 10000
     critical_low_pop    = 500
@@ -204,12 +211,10 @@ class Population:
         ''' Print a subset of Beings in the Population '''
         if len(self.population) == 0:
             return
-
         # generate starting and finishing banners
         gen_desc    = "\n=== {} from Generation {} ===\n".format(count, self.generation)
         desc_len    = len(gen_desc) - 2
         gen_end     = "\n{}\n".format("="*desc_len)
-
         # generate middle string containing subset of beings in population
         pop_string = ""
         left_offset = " "*floor((desc_len - len(self.get_rand_being()))/2)
@@ -219,7 +224,6 @@ class Population:
             if index != 0:
                 pop_string += "\n"
             pop_string += left_offset + str(being)
-
         print(gen_desc + pop_string + gen_end)
 
     def __init__(self, size: int, optimal_base: str) -> PopType:
