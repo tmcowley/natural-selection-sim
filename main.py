@@ -15,7 +15,8 @@ class Being:
     mutation_rate_denominator = 1000
 
     def is_child_of(self, being):
-        is_parent = (self.parent1 == being or self.parent2 == being)
+        # is_parent = (self.parent1 == being or self.parent2 == being)
+        is_parent = being in (self.parent1, self.parent2)
         return is_parent
 
     @staticmethod
@@ -51,18 +52,19 @@ class Being:
         #print("given a {}% chance to live".format((dna_optimal_base_proportion**2)*100))
         return dna_optimal_base_proportion**Being.survival_prob_exponent
 
-    def __str__(self):
-        string = "["
-        for base in self.dna:
-            string += base
-        string += "] Gen:{}".format(self.generation)
-        return string
+    def __str__(self) -> str:
+        being_str = [None]*18
+        being_str[0] = '['
+        for index, base in enumerate(self.dna):
+            being_str[index+1] = base
+        being_str[17]  = "] Gen:{}".format(self.generation)
+        return ''.join(being_str)
 
     def __init__(self, this_generation:int, parent1=None, parent2=None):
         self.generation = this_generation
         self.parent1 = parent1
         self.parent2 = parent2
-        if ((parent1 == None) or (parent2 == None)):
+        if ((parent1 is None) or (parent2 is None)):
             self.dna = Being.random_dna()
         else:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna)
@@ -79,14 +81,14 @@ class Population:
         related = (being1.is_child_of(being2) or being2.is_child_of(being1))
         return related
 
-    def being_is_optimal(self, being, optimal_base):
+    def being_is_optimal(self, being):
         if not being:
             return False
         for base in being.dna:
-            if base is not optimal_base:
+            if base is not self.optimal_base:
                 return False
         return True
-    
+
     def get_population_size(self):
         return len(self.population)
 
@@ -106,7 +108,7 @@ class Population:
         # let n be the current population size, allow kn reproductions
         offspring = [None]*floor(self.reproduction_factor*(len(self.population)))
 
-        for index in range(len(offspring)):
+        for index, child in enumerate(offspring):
             mating_pair = sample(self.population, 2)
             candidate1 = mating_pair[0]
             candidate2 = mating_pair[1]
@@ -131,7 +133,8 @@ class Population:
 
         # filter dead beings from survivors, set to population
         self.population = [being for being in survivors if being]
-        print ("Survived from Gen({} \u2192 {}): {}".format(self.generation, self.generation+1, len(self.population)))
+        print ("Survived from Gen({} \u2192 {}): {}".format(
+            self.generation, self.generation+1, len(self.population)))
 
     def control_population(self):
         if len(self.population) <= Population.critical_low_pop:
@@ -155,33 +158,33 @@ class Population:
             return
         if count <= 0:
             return
-        
+
         self.get_next_gen()
         print("Gen {} population: {}".format(self.generation, self.get_population_size()))
         if count != 1:
             print("")
-        
+
         # shuffle population to improve randomness
         shuffle(self.population)
-        
+
         self.advance_gen(count-1)
 
     def get_rand_being(self):
         if self.get_population_size() == 0:
             return None
         return choice(self.population)
-    
+
     def assess_optimality(self):
         random_being = pop.get_rand_being()
         print("Optimal being: [{}]".format(pop.optimal_base*16))
-        if self.being_is_optimal(random_being, pop.optimal_base):
+        if self.being_is_optimal(random_being):
             print("Population is likely optimal.\n")
         else:
             print("Population is unlikely optimal.\n")
 
     def print_generation(self):
         if len(self.population) == 0:
-            return "\n"
+            return
         gen_desc    = "\n==== Generation {} ====\n".format(self.generation)
         desc_len    = len(gen_desc) - 2
         gen_end     = "\n{}\n".format("="*desc_len)
@@ -189,7 +192,7 @@ class Population:
 
     def print_subset(self, count):
         if len(self.population) == 0:
-            return "\n"
+            return
 
         gen_desc    = "\n=== {} from Generation {} ===\n".format(count, self.generation)
         desc_len    = len(gen_desc) - 2
@@ -202,7 +205,7 @@ class Population:
             if index >= count:
                 break
             if index != 0:
-                pop_string += "\n" 
+                pop_string += "\n"
             pop_string += left_offset + str(being)
 
         print(gen_desc + pop_string + gen_end)
@@ -239,4 +242,4 @@ pop.print_subset(20)
 pop.advance_gen(25)
 sleep(1)
 pop.print_subset(20)
-pop.assess_optimality();
+pop.assess_optimality()
