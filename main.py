@@ -5,16 +5,21 @@ from random import random       # to generate random initial pop
 from random import sample       # to choose mating partners
 from random import randint      # to generate a random mutation
 
+from typing import TypeVar  # duck typing
 from typing import List     # duck typing
-from math import floor      # storing offspring, and pretty output
-from time import sleep      # stagger user output
+from math   import floor    # storing offspring, and pretty output
+from time   import sleep    # stagger user output
+
+# Duck typing: creating class: Being, Population types
+BeingType   = TypeVar('BeingType',  bound='Being')
+PopType     = TypeVar('PopType',    bound='Population')
 
 class Being:
     dna_bases   = ['A', 'C', 'G', 'T']
     survival_prob_exponent = 3.5
     mutation_rate_denominator = 1000
 
-    def is_child_of(self, being) -> bool:
+    def is_child_of(self, being: BeingType) -> bool:
         ''' Assess if this being instance is the child of the given being '''
         return being in (self.parent1, self.parent2)
 
@@ -56,12 +61,15 @@ class Being:
         # scale similarity with exponent > 1, this makes survival more selective
         return dna_optimal_base_proportion**Being.survival_prob_exponent
 
+    def __len__(self) -> int:
+        return len(str(self))
+
     def __str__(self) -> str:
         ''' String representation of a Being, of the form: [DNA] Gen: '''
         being_str = '[' + ''.join(self.dna) + "] Gen:{}".format(self.generation)
         return being_str
 
-    def __init__(self, this_generation: int, parent1=None, parent2=None):
+    def __init__(self, this_generation: int, parent1=None, parent2=None) -> BeingType:
         ''' Constructor -> generate being (from parents) '''
         self.generation = this_generation
         self.parent1 = parent1
@@ -78,12 +86,12 @@ class Population:
     reproduction_factor = 4
 
     @staticmethod
-    def are_related(being1, being2) -> bool:
+    def are_related(being1: BeingType, being2: BeingType) -> bool:
         # check if being2 is a parent of being1, and if being1 is a parent of being2
         related = (being1.is_child_of(being2) or being2.is_child_of(being1))
         return related
 
-    def being_is_optimal(self, being) -> bool:
+    def being_is_optimal(self, being: BeingType) -> bool:
         if not being:
             return False
         for base in being.dna:
@@ -95,7 +103,7 @@ class Population:
         return len(self.population)
 
     @staticmethod
-    def mate(generation, parent1, parent2):
+    def mate(generation, parent1: BeingType, parent2: BeingType) -> BeingType:
         return Being(generation, parent1, parent2)
 
     def mating_season(self) -> None:
@@ -167,7 +175,7 @@ class Population:
 
         self.advance_gen(count-1)
 
-    def get_rand_being(self):
+    def get_rand_being(self) -> BeingType:
         if self.get_population_size() == 0:
             return None
         return choice(self.population)
@@ -192,8 +200,7 @@ class Population:
         gen_end     = "\n{}\n".format("="*desc_len)
 
         pop_string = ""
-        # 24 is the length of a being's str representation
-        left_offset = " "*floor((desc_len - 24)/2)
+        left_offset = " "*floor((desc_len - len(self.get_rand_being()))/2)
         for index, being in enumerate(self.population):
             if index >= count:
                 break
@@ -211,7 +218,7 @@ class Population:
             pop_string += str(being)
         return pop_string
 
-    def __init__(self, size: int, optimal_base: str):
+    def __init__(self, size: int, optimal_base: str) -> PopType:
         if size <= 0:
             print("\nError: Population size must be positive")
             print("Notice: Setting population size to 200")
@@ -230,10 +237,10 @@ class Population:
 pop = Population(500, choice(Being.dna_bases))
 sleep(1)
 # print subset of initial population
-pop.print_subset(20)
+pop.print_subset(10)
 
 # advance population by n generations, print pop
 pop.advance_gen(25)
 sleep(1)
-pop.print_subset(20)
+pop.print_subset(10)
 pop.assess_optimality()
