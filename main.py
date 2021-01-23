@@ -5,27 +5,27 @@ from random import random       # to generate random initial pop
 from random import sample       # to choose mating partners
 from random import randint      # to generate a random mutation
 
-from math import floor          # storing offspring, and pretty output
-
-from time import sleep          # stagger user output
+from typing import List     # duck typing
+from math import floor      # storing offspring, and pretty output
+from time import sleep      # stagger user output
 
 class Being:
     dna_bases   = ['A', 'C', 'G', 'T']
     survival_prob_exponent = 3.5
     mutation_rate_denominator = 1000
 
-    def is_child_of(self, being):
-        # is_parent = (self.parent1 == being or self.parent2 == being)
-        is_parent = being in (self.parent1, self.parent2)
-        return is_parent
+    def is_child_of(self, being) -> bool:
+        ''' Assess if this being instance is the child of the given being '''
+        return being in (self.parent1, self.parent2)
 
     @staticmethod
-    def genetic_mutation():
-        # 1 in 1000 chance
+    def genetic_mutation() -> bool:
+        ''' Simulate mutation: 1 in (mutation_rate_denom) chance of returning True '''
         return randint(1, Being.mutation_rate_denominator) == 1
 
     @staticmethod
-    def merge_dna(dna_parent_1, dna_parent_2):
+    def merge_dna(dna_parent_1: List[str], dna_parent_2: List[str]) -> List[str]:
+        ''' Randomly merge given DNA lists to create offspring DNA '''
         dna_array = [None]*16
         # for each dna base, randomly pick one base from parents
         for index in range(16):
@@ -38,33 +38,35 @@ class Being:
         return dna_array
 
     @staticmethod
-    def random_dna():
+    def random_dna() -> List[str]:
+        ''' Generate random DNA '''
         dna_array = [None]*16
         # for each dna base, randomly pick one base
         for index in range(16):
             dna_array[index] = choice(Being.dna_bases)
         return dna_array
 
-    def get_survival_probability(self, optimal_base, current_generation):
+    def get_survival_probability(self, optimal_base: str, current_generation: int) -> int:
+        ''' Calculate a Being's survival probability, return is [0, 1] '''
+        # Being is unfit if older than 4 generations
         if (current_generation - self.generation) >= 4:
-            return 0 # senicide
+            return 0
+        # calculate similarity (0: nonoptimal, 1: perfectly optimal)
         dna_optimal_base_proportion = self.dna.count(optimal_base) / len(self.dna)
-        #print("given a {}% chance to live".format((dna_optimal_base_proportion**2)*100))
+        # scale similarity with exponent > 1, this makes survival more selective
         return dna_optimal_base_proportion**Being.survival_prob_exponent
 
     def __str__(self) -> str:
-        being_str = [None]*18
-        being_str[0] = '['
-        for index, base in enumerate(self.dna):
-            being_str[index+1] = base
-        being_str[17]  = "] Gen:{}".format(self.generation)
-        return ''.join(being_str)
+        ''' String representation of a Being, of the form: [DNA] Gen: '''
+        being_str = '[' + ''.join(self.dna) + "] Gen:{}".format(self.generation)
+        return being_str
 
-    def __init__(self, this_generation:int, parent1=None, parent2=None):
+    def __init__(self, this_generation: int, parent1=None, parent2=None):
+        ''' Constructor -> generate being (from parents) '''
         self.generation = this_generation
         self.parent1 = parent1
         self.parent2 = parent2
-        if ((parent1 is None) or (parent2 is None)):
+        if None in (parent1, parent2):
             self.dna = Being.random_dna()
         else:
             self.dna = Being.merge_dna(parent1.dna, parent2.dna)
@@ -76,12 +78,12 @@ class Population:
     reproduction_factor = 4
 
     @staticmethod
-    def are_related(being1, being2):
+    def are_related(being1, being2) -> bool:
         # check if being2 is a parent of being1, and if being1 is a parent of being2
         related = (being1.is_child_of(being2) or being2.is_child_of(being1))
         return related
 
-    def being_is_optimal(self, being):
+    def being_is_optimal(self, being) -> bool:
         if not being:
             return False
         for base in being.dna:
@@ -89,18 +91,14 @@ class Population:
                 return False
         return True
 
-    def get_population_size(self):
+    def get_population_size(self) -> int:
         return len(self.population)
-
-    def replace_parent_with_child(self, parent, child):
-        parent_index = self.population.index(parent)
-        self.population[parent_index] = child
 
     @staticmethod
     def mate(generation, parent1, parent2):
         return Being(generation, parent1, parent2)
 
-    def mating_season(self):
+    def mating_season(self) -> None:
         # shuffle population to improve randomness
         shuffle(self.population)
 
@@ -120,7 +118,7 @@ class Population:
         offspring = [child for child in offspring if child]
         self.population += offspring
 
-    def test_fitness(self):
+    def test_fitness(self) -> None:
         # empty list, storing survivors
         survivors = [None]*len(self.population)
 
@@ -136,7 +134,7 @@ class Population:
         print ("Survived from Gen({} \u2192 {}): {}".format(
             self.generation, self.generation+1, len(self.population)))
 
-    def control_population(self):
+    def control_population(self) -> None:
         if len(self.population) <= Population.critical_low_pop:
             # increase reproduction rate, halve exp
             self.reproduction_factor += 1
@@ -146,14 +144,14 @@ class Population:
             self.reproduction_factor *= 0.5
             Being.survival_prob_exponent *= 2
 
-    def get_next_gen(self):
+    def get_next_gen(self) -> None:
         self.control_population()
         self.test_fitness()
         if self.get_population_size() > 1:
             self.mating_season()
         self.generation += 1
 
-    def advance_gen(self, count):
+    def advance_gen(self, count: int) -> None:
         if self.get_population_size() < 1:
             return
         if count <= 0:
@@ -174,23 +172,18 @@ class Population:
             return None
         return choice(self.population)
 
-    def assess_optimality(self):
+    def assess_optimality(self) -> None:
         random_being = pop.get_rand_being()
         print("Optimal being: [{}]".format(pop.optimal_base*16))
         if self.being_is_optimal(random_being):
-            print("Population is likely optimal.\n")
+            print("Population is likely optimal\n")
         else:
-            print("Population is unlikely optimal.\n")
+            print("Population is unlikely optimal\n")
 
-    def print_generation(self):
-        if len(self.population) == 0:
-            return
-        gen_desc    = "\n==== Generation {} ====\n".format(self.generation)
-        desc_len    = len(gen_desc) - 2
-        gen_end     = "\n{}\n".format("="*desc_len)
-        print(gen_desc + str(self) + gen_end)
+    def print_generation(self) -> None:
+        self.print_subset(self.get_population_size())
 
-    def print_subset(self, count):
+    def print_subset(self, count: int) -> None:
         if len(self.population) == 0:
             return
 
@@ -210,7 +203,7 @@ class Population:
 
         print(gen_desc + pop_string + gen_end)
 
-    def __str__(self):
+    def __str__(self) -> str:
         pop_string = ""
         for index, being in enumerate(self.population):
             if index != 0:
@@ -218,7 +211,7 @@ class Population:
             pop_string += str(being)
         return pop_string
 
-    def __init__(self, size, optimal_base):
+    def __init__(self, size: int, optimal_base: str):
         if size <= 0:
             print("\nError: Population size must be positive")
             print("Notice: Setting population size to 200")
@@ -231,6 +224,7 @@ class Population:
         # for (index, base) in enumerate(self.population):
         for index in range(len(self.population)):
             self.population[index] = Being(self.generation)
+
 
 # create a population instance with 500 beings
 pop = Population(500, choice(Being.dna_bases))
