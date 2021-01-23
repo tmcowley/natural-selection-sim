@@ -87,26 +87,27 @@ class Population:
 
     @staticmethod
     def are_related(being1: BeingType, being2: BeingType) -> bool:
-        # check if being2 is a parent of being1, and if being1 is a parent of being2
+        ''' Check if the two given beings are related '''
         related = (being1.is_child_of(being2) or being2.is_child_of(being1))
         return related
 
     def being_is_optimal(self, being: BeingType) -> bool:
+        ''' Check if a given being is optimal (i.e. has optimal genetics) '''
         if not being:
             return False
-        for base in being.dna:
-            if base is not self.optimal_base:
-                return False
-        return True
+        return all(self.optimal_base is base for base in being.dna)
 
     def get_population_size(self) -> int:
+        ''' Get the number of Beings in the Population '''
         return len(self.population)
 
     @staticmethod
     def mate(generation, parent1: BeingType, parent2: BeingType) -> BeingType:
+        ''' Mate two Beings and return their (singular) offspring '''
         return Being(generation, parent1, parent2)
 
     def mating_season(self) -> None:
+        ''' Invoke mating season (once per generation): non-related Beings randomly mate '''
         # shuffle population to improve randomness
         shuffle(self.population)
 
@@ -127,6 +128,7 @@ class Population:
         self.population += offspring
 
     def test_fitness(self) -> None:
+        ''' Impose selection; test fitness. Higher fitness improves survivability '''
         # empty list, storing survivors
         survivors = [None]*len(self.population)
 
@@ -143,6 +145,7 @@ class Population:
             self.generation, self.generation+1, len(self.population)))
 
     def control_population(self) -> None:
+        ''' Dynamic population control: simulate changing environmental pressures '''
         if len(self.population) <= Population.critical_low_pop:
             # increase reproduction rate, halve exp
             self.reproduction_factor += 1
@@ -153,6 +156,7 @@ class Population:
             Being.survival_prob_exponent *= 2
 
     def get_next_gen(self) -> None:
+        ''' Simulate one generation: env changes, selection, mating season '''
         self.control_population()
         self.test_fitness()
         if self.get_population_size() > 1:
@@ -160,6 +164,7 @@ class Population:
         self.generation += 1
 
     def advance_gen(self, count: int) -> None:
+        ''' Simulate val(count) number of generations, stop if population dies out '''
         if self.get_population_size() < 1:
             return
         if count <= 0:
@@ -173,14 +178,17 @@ class Population:
         # shuffle population to improve randomness
         shuffle(self.population)
 
+        # recursively call same method, with count decreased
         self.advance_gen(count-1)
 
     def get_rand_being(self) -> BeingType:
+        ''' Get a random Being in the Population '''
         if self.get_population_size() == 0:
             return None
         return choice(self.population)
 
     def assess_optimality(self) -> None:
+        ''' Assess population optimality: does a random Being (in Population) have optimal DNA? '''
         random_being = pop.get_rand_being()
         print("Optimal being: [{}]".format(pop.optimal_base*16))
         if self.being_is_optimal(random_being):
@@ -189,16 +197,20 @@ class Population:
             print("Population is unlikely optimal\n")
 
     def print_generation(self) -> None:
+        ''' Print each Being in the Population '''
         self.print_subset(self.get_population_size())
 
     def print_subset(self, count: int) -> None:
+        ''' Print a subset of Beings in the Population '''
         if len(self.population) == 0:
             return
 
+        # generate starting and finishing banners
         gen_desc    = "\n=== {} from Generation {} ===\n".format(count, self.generation)
         desc_len    = len(gen_desc) - 2
         gen_end     = "\n{}\n".format("="*desc_len)
 
+        # generate middle string containing subset of beings in population
         pop_string = ""
         left_offset = " "*floor((desc_len - len(self.get_rand_being()))/2)
         for index, being in enumerate(self.population):
@@ -210,15 +222,8 @@ class Population:
 
         print(gen_desc + pop_string + gen_end)
 
-    def __str__(self) -> str:
-        pop_string = ""
-        for index, being in enumerate(self.population):
-            if index != 0:
-                pop_string += "\n"
-            pop_string += str(being)
-        return pop_string
-
     def __init__(self, size: int, optimal_base: str) -> PopType:
+        ''' Constructor -> generate Population '''
         if size <= 0:
             print("\nError: Population size must be positive")
             print("Notice: Setting population size to 200")
