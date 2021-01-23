@@ -221,15 +221,14 @@ class Population:
         for index in range(len(self.population)):
             self.population[index] = Being(self.generation)
 
-string = "\n(31)\n"
-print(len(string))
-
+# create a population instance with 500 beings
 pop = Population(500, choice(Being.dna_bases))
 sleep(1)
+# print subset of initial population
 pop.print_subset(20)
 
+# advance population by n generations, print pop
 pop.advance_gen(3)
 sleep(1)
 pop.print_subset(20)
-
 pop.assess_optimality();
