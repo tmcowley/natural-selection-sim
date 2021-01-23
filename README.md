@@ -3,6 +3,8 @@ Simple model for evolution by natural selection, which makes **many** simplifica
 
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
+Developed: January, 2021
+
 ## Running 
 Set permissions, run program: 
 ```
