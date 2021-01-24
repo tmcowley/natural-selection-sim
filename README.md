@@ -23,13 +23,13 @@ $ python3 main.py
 ```
 
 #### Population Subset (after 30 generations)
+```
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+[GGGGGGGGGGGGGGGG] Gen:30
+```
 Note: Optimal DNA set to 16 Gs
-```
-[GGGGGGGGGGGGGGGG] Gen:30
-[GGGGGGGGGGGGGGGG] Gen:30
-[GGGGGGGGGGGGGGGG] Gen:30
-[GGGGGGGGGGGGGGGG] Gen:30
-```
 
 <hr />
 
