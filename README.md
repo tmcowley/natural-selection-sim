@@ -3,7 +3,7 @@ A model for evolution by natural selection, which makes **many** simplifications
 
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
-Developed: January, 2021
+Developed: January 2021
 
 ## Running 
 Set permissions, run program: 
