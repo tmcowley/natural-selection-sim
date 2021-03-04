@@ -29,7 +29,7 @@ $ python3 main.py
 [GGGGGGGGGGGGGGGG] Gen:30
 [GGGGGGGGGGGGGGGG] Gen:30
 ```
-Note: Optimal DNA set to 16 Gs
+(With optimal DNA set to 16 Gs)
 
 <hr />
 
