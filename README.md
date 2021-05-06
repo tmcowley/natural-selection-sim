@@ -1,5 +1,5 @@
 # Natural Selection Model
-A model for evolution by natural selection, which makes **many** simplifications and shortcuts.
+A model for evolution by natural selection that makes **many** simplifications.
 
 This small project was undertaken to assist my understanding of object-oriented programming in Python.
 
